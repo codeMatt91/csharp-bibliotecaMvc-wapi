@@ -1,0 +1,119 @@
+﻿@model csharp_bibliotecaMvc.Models.Libro
+@ViewBag.Autori
+
+@{
+    ViewData["Title"] = "Create";
+    //var autori = (ICollection<Autori>)ViewData["MyData"];
+    
+}
+
+<h1>Create</h1>
+
+<h4>Libro</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Titolo" class="control-label"></label>
+                <input asp-for="Titolo" class="form-control" />
+                <span asp-validation-for="Titolo" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Settore" class="control-label"></label>
+                <input asp-for="Settore" class="form-control" />
+                <span asp-validation-for="Settore" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Scaffale" class="control-label"></label>
+                <input asp-for="Scaffale" class="form-control" />
+                <span asp-validation-for="Scaffale" class="text-danger"></span>
+            </div>
+            <div>
+                Seleziona un autore dalla lista:
+            </div>
+            <select id="list-autore" name="autori" multiple>
+                @{
+                foreach (var a in @ViewBag.Autori)
+                {
+                        <option id="list" value="@a.AutoreId">@a.Nome @a.Cognome</option>
+                }
+            }
+			</select>
+
+            <div>Altrimenti seleziona quanti nuovi vuoi inserire</div>
+            <select id="Selected">
+
+				<option id="option" value="1">1</option>
+				<option id="option" value="2">2</option>
+				<option id="option" value="3">3</option>
+				<option id="option" value="4">4</option>
+				<option id="option" value="5">5</option>
+				<option id="option" value="6">6</option>
+				<option id="option" value="7">7</option>
+
+			</select>
+            @*<div class="form-group">
+                 @Html.DropDownListFor(m => m.Stato, new List<SelectListItem>
+                   { new SelectListItem{Text="Disponibile", Value="Disponibile"},
+                     new SelectListItem{Text="In Prestito", Value="Prestito"}}, "Seleziona")
+               
+            </div>*@
+            <button type="button" id="AggiungiAutore" class="btn btn-primary">Aggiungi Autore</button>
+			<div class="form-group my-3" id="autoriGroup"></div>
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+		let i = 0;
+		const autoriGroup = document.getElementById("autoriGroup");
+		document.getElementById("AggiungiAutore").addEventListener("click",
+			function () {
+				// Per ritardare l'invio della Form
+				
+
+				var Selected = document.getElementById("Selected");
+                var option = document.getElementById("option").value;
+				var indiceSelezionato = Selected.selectedIndex;
+				var valoreSelezionato = Selected.options[indiceSelezionato].value;
+				
+                
+				for (let i = 0; i < valoreSelezionato; i++) {
+
+                    var tr = document.createElement("tr");
+
+                    tr.innerHTML = `
+                    <div>Autore ${i + 1}</div><br>
+					<tr>  
+                        <td style="font-size: 12px; padding-left: 2px"> 
+                            <label>Nome</label><br>
+                            <input data-val="true" data-val-required="The Cognome field is required." id="Autori_0__Nome" name="Autori[${i}].Nome" type="text" value="" /><br>
+                            <label>Cognome</label><br>
+                            <input data-val="true" data-val-required="The Nome field is required." id="Autori_0__Cognome" name="Autori[${i}].Cognome" type="text" value="" /><br>
+                        </td>  
+                    </tr> `
+                    
+                        autoriGroup.append(tr);
+				}
+
+                
+            
+			}
+		);
+	</script>
+}
