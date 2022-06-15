@@ -10,13 +10,13 @@ builder.Services.AddControllersWithViews();
 //per connettersi al db:
 
 
-string sConnectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<AutoriContext>(options =>
-  options.UseInMemoryDatabase("Autoris"));
+//Registriamo il context
+builder.Services.AddDbContext<AutoriContext>(opt =>
+    opt.UseInMemoryDatabase("Autoris"));
 
-//string sConnectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-//builder.Services.AddDbContext<BibliotecaContext>(options =>
-//  options.UseSqlServer(sConnectionString));
+string sConnectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<BibliotecaContext>(options =>
+  options.UseSqlServer(sConnectionString));
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
